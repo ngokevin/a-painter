@@ -1,3 +1,5 @@
+require('../vendor/aframe.min.js');
+
 window.saveAs = require('../vendor/saveas.js').saveAs;
 require('./dragndrop.js');
 require('./binarymanager.js');
@@ -8,6 +10,7 @@ require('./systems/brush.js');
 require('./systems/ui.js');
 require('./systems/painter.js');
 
+require('../vendor/aframe-audioanalyser-component.min.js');
 require('./components/brush.js');
 require('./components/if-no-vr-headset.js');
 require('./components/json-model.js');

@@ -141,15 +141,29 @@ AFRAME.registerSystem('brush', {
     this.strokes = [];
   },
   init: function () {
+    this.audioAnalyserEl = this.sceneEl.querySelector('#audioAnalyser');
     this.version = VERSION;
     this.clear();
   },
+
+  /**
+   * Invoke each stroke's `tick`. Include volume data for audio reactive brushes.
+   */
   tick: function (time, delta) {
+    var audioAnalyserComponent;
+    var volume;
+
     if (!this.strokes.length) { return; }
+
+    // Update volume.
+    audioAnalyserComponent = this.audioAnalyserEl.components.audioanalyser;
+    if (audioAnalyserComponent) { volume = audioAnalyserComponent.volume; }
+
     for (var i = 0; i < this.strokes.length; i++) {
-      this.strokes[i].tick(time, delta);
+      this.strokes[i].tick(time, delta, volume);
     }
   },
+
   generateRandomStrokes: function (numStrokes) {
     function randNeg () { return 2 * Math.random() - 1; }
 

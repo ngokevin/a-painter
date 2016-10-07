@@ -1,11 +1,12 @@
-/* globals AFRAME THREE */
+/* globals AFRAME, THREE */
 AFRAME.registerComponent('brush', {
   schema: {
     color: {type: 'color', default: '#ef2d5e'},
-    size: {default: 0.01, min: 0.0, max: 0.3},
     brush: {default: 'flat'},
-    enabled: { default: true }
+    enabled: {default: true},
+    size: {default: 0.01, min: 0.0, max: 0.3}
   },
+
   init: function () {
     var data = this.data;
     this.color = new THREE.Color(data.color);
@@ -65,6 +66,7 @@ AFRAME.registerComponent('brush', {
       }
     });
   },
+
   update: function (oldData) {
     var data = this.data;
     if (oldData.color !== data.color) {
@@ -75,6 +77,7 @@ AFRAME.registerComponent('brush', {
       this.el.emit('brushsize-changed', {size: data.size});
     }
   },
+
   tick: (function () {
     var position = new THREE.Vector3();
     var rotation = new THREE.Quaternion();
@@ -84,10 +87,12 @@ AFRAME.registerComponent('brush', {
       if (this.currentStroke && this.active) {
         this.obj.matrixWorld.decompose(position, rotation, scale);
         var pointerPosition = this.system.getPointerPosition(position, rotation);
-        this.currentStroke.addPoint(position, rotation, pointerPosition, this.sizeModifier, time);
+        this.currentStroke.addPoint(position, rotation, pointerPosition, this.sizeModifier,
+                                    time);
       }
     };
   })(),
+
   startNewStroke: function () {
     this.currentStroke = this.system.addNewStroke(this.data.brush, this.color, this.data.size);
     this.el.emit('stroke-started', {entity: this.el, stroke: this.currentStroke});

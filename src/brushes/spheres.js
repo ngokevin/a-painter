@@ -36,14 +36,17 @@ AFRAME.registerBrush('spheres',
       // Return true as we've added correctly a new point (or sphere)
       return true;
     },
-    // This function is called on every frame
-    tick: function (time, delta) {
+
+    tick: function (time, delta, volume) {
       for (var i = 0; i < this.object3D.children.length; i++) {
         var sphere = this.object3D.children[i];
         // Calculate the sine value based on the time and the phase for this sphere
         // and use it to scale the geometry
         var sin = (Math.sin(sphere.phase + time / 500.0) + 1) / 2 + 0.1;
         sphere.scale.copy(sphere.initialScale).multiplyScalar(sin);
+        if (volume) {
+          sphere.scale.multiplyScalar(volume * .005);
+        }
       }
     }
   },

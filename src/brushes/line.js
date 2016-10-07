@@ -21,6 +21,15 @@
       mesh.vertices = this.vertices;
 
       this.object3D.add(mesh);
+      mesh.initialScale = mesh.scale.clone();
+    },
+
+    tick: function (time, delta, volume) {
+      if (!volume) { return; }
+      for (var i = 0; i < this.object3D.children.length; i++) {
+        var segment = this.object3D.children[i];
+        segment.scale.copy(segment.initialScale).multiplyScalar(volume * .01);
+      }
     },
 
     getMaterial: function () {
